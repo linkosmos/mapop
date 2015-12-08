@@ -1,0 +1,23 @@
+language: go
+
+go:
+  - 1.5
+
+evn:
+  - GO15VENDOREXPERIMENT=1
+
+before_install:
+  - go get -v golang.org/x/tools/cmd/cover
+  - go get -v github.com/golang/lint/golint
+  - go get -v github.com/Sirupsen/logrus
+  - go get -v github.com/stretchr/testify/assert
+
+install:
+  - go install -race -v std
+  - go get -race -t -v ./...
+  - go install -race -v ./...
+
+script:
+  - $HOME/gopath/bin/golint .
+  - go test -cpu=2 -race -v ./...
+  - go test -cpu=2 -covermode=atomic ./...
