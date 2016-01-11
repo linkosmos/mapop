@@ -1,6 +1,7 @@
 package mapop
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -204,6 +205,65 @@ func TestReject(t *testing.T) {
 
 		for _, keyGot := range keysGot {
 			assert.Contains(t, test.expectedKeys, keyGot)
+		}
+	}
+}
+
+var mapKeysTests = []struct {
+	input    map[string]interface{}
+	expected map[string]interface{}
+}{
+	{
+		input: map[string]interface{}{
+			"key1": 2,
+			"KEY3": "aw",
+			"NIL":  nil,
+		},
+		expected: map[string]interface{}{
+			"key1": 2,
+			"key3": "aw",
+			"nil":  nil,
+		},
+	},
+}
+
+func TestMapKeys(t *testing.T) {
+	for _, test := range mapKeysTests {
+		got := MapKeys(strings.ToLower, test.input)
+
+		assert.NotNil(t, got)
+		for expectedKey, expectedValue := range test.expected {
+			valueGot := got[expectedKey]
+
+			assert.Equal(t, expectedValue, valueGot)
+		}
+	}
+}
+
+var mapValuesTests = []struct {
+	input map[string]interface{}
+}{
+	{
+		input: map[string]interface{}{
+			"key1": 2,
+			"key3": "aw",
+			"nil":  nil,
+		},
+	},
+}
+
+func TestMapValues(t *testing.T) {
+	expectedValue := "1"
+	f := func(input interface{}) interface{} {
+		return expectedValue
+	}
+
+	for _, test := range mapValuesTests {
+		got := MapValues(f, test.input)
+
+		assert.NotNil(t, got)
+		for _, gotValue := range got {
+			assert.Equal(t, expectedValue, gotValue)
 		}
 	}
 }

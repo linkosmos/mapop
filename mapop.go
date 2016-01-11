@@ -36,3 +36,29 @@ func Select(input map[string]interface{}, keys ...string) map[string]interface{}
 func Reject(input map[string]interface{}, keys ...string) map[string]interface{} {
 	return selectORreject(true, input, keys...)
 }
+
+// MapKeys - maps map keys, values remain unchanged and associated
+func MapKeys(f func(string) string, input map[string]interface{}) (output map[string]interface{}) {
+	size := len(input)
+	if size == 0 {
+		return input
+	}
+	output = make(map[string]interface{}, size)
+	for key, value := range input {
+		output[f(key)] = value
+	}
+	return output
+}
+
+// MapValues - maps map values, keys and values association remains unchanged
+func MapValues(f func(interface{}) interface{}, input map[string]interface{}) (output map[string]interface{}) {
+	size := len(input)
+	if size == 0 {
+		return input
+	}
+	output = make(map[string]interface{}, size)
+	for key, value := range input {
+		output[key] = f(value)
+	}
+	return output
+}
