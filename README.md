@@ -14,6 +14,7 @@ Regular map[string]interface{} operations. Ruby enumerable inspired package.
  - Values(input map[string]interface{}) (values []interface{})
  - MapKeys(f func(string) string, input map[string]interface{}) (output map[string]interface{})
  - MapValues(f func(interface{}) interface{}, input map[string]interface{}) (output map[string]interface{})
+ - Partition(f func(string, interface{}) bool, input map[string]interface{}) (partition []map[string]interface{})
 
 ### License
 

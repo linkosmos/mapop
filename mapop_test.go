@@ -267,3 +267,91 @@ func TestMapValues(t *testing.T) {
 		}
 	}
 }
+
+var partitionByKeyTests = []struct {
+	input              map[string]interface{}
+	expectedPartition1 map[string]interface{}
+	expectedPartition2 map[string]interface{}
+	partitionFunc      func(string, interface{}) bool
+}{
+	{
+		input:              nil,
+		expectedPartition1: nil,
+		expectedPartition2: nil,
+		partitionFunc: func(s string, i interface{}) bool {
+			return true
+		},
+	},
+	{
+		input:              map[string]interface{}{},
+		expectedPartition1: map[string]interface{}{},
+		expectedPartition2: nil,
+		partitionFunc: func(s string, i interface{}) bool {
+			return true
+		},
+	},
+	{
+		input: map[string]interface{}{
+			"key1":    2,
+			"key2":    3,
+			"name":    nil,
+			"surname": nil,
+		},
+		expectedPartition1: map[string]interface{}{
+			"key1": 2,
+			"key2": 3,
+		},
+		expectedPartition2: map[string]interface{}{
+			"name":    nil,
+			"surname": nil,
+		},
+		partitionFunc: func(s string, i interface{}) bool {
+			return strings.Contains(s, "key")
+		},
+	},
+	{
+		input: map[string]interface{}{
+			"key1":    2,
+			"key2":    3,
+			"name":    nil,
+			"surname": nil,
+		},
+		expectedPartition1: map[string]interface{}{
+			"key1":    2,
+			"key2":    3,
+			"name":    nil,
+			"surname": nil,
+		},
+		expectedPartition2: map[string]interface{}{},
+		partitionFunc: func(s string, i interface{}) bool {
+			return true
+		},
+	},
+	{
+		input: map[string]interface{}{
+			"key1":    2,
+			"key2":    3,
+			"name":    nil,
+			"surname": nil,
+		},
+		expectedPartition1: map[string]interface{}{},
+		expectedPartition2: map[string]interface{}{
+			"key1":    2,
+			"key2":    3,
+			"name":    nil,
+			"surname": nil,
+		},
+		partitionFunc: func(s string, i interface{}) bool {
+			return false
+		},
+	},
+}
+
+func TestPartition(t *testing.T) {
+	for _, test := range partitionByKeyTests {
+		got := Partition(test.partitionFunc, test.input)
+
+		assert.Equal(t, test.expectedPartition1, got[0])
+		assert.Equal(t, test.expectedPartition2, got[1])
+	}
+}

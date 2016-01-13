@@ -62,3 +62,26 @@ func MapValues(f func(interface{}) interface{}, input map[string]interface{}) (o
 	}
 	return output
 }
+
+// Partition - returns two maps in array, the first containing the elements
+// for which the function evaluates to true, the second containing the rest.
+func Partition(f func(string, interface{}) bool, input map[string]interface{}) (partition []map[string]interface{}) {
+	partition = make([]map[string]interface{}, 2)
+	size := len(input)
+	if size == 0 {
+		partition[0] = input
+		partition[1] = nil
+		return partition
+	}
+	// Assuming half of key values will be partitioned
+	partition[0] = make(map[string]interface{}, size/2)
+	partition[1] = make(map[string]interface{}, size/2)
+	for key, value := range input {
+		if f(key, value) {
+			partition[0][key] = value
+		} else {
+			partition[1][key] = value
+		}
+	}
+	return partition
+}
