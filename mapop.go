@@ -85,3 +85,19 @@ func Partition(f func(string, interface{}) bool, input map[string]interface{}) (
 	}
 	return partition
 }
+
+// Map - maps key or values as defined in function
+func Map(f func(key string, value interface{}) (string, interface{}), input map[string]interface{}) (output map[string]interface{}) {
+	size := len(input)
+	if size == 0 {
+		return input
+	}
+	output = make(map[string]interface{}, size)
+	var mappedKey string
+	var mappedValue interface{}
+	for key, value := range input {
+		mappedKey, mappedValue = f(key, value)
+		output[mappedKey] = mappedValue
+	}
+	return output
+}

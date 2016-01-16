@@ -355,3 +355,38 @@ func TestPartition(t *testing.T) {
 		assert.Equal(t, test.expectedPartition2, got[1])
 	}
 }
+
+var mapTests = []struct {
+	input    map[string]interface{}
+	expected map[string]interface{}
+	mapFunc  func(string, interface{}) (string, interface{})
+}{
+	{
+		input: map[string]interface{}{
+			"key1": 2,
+			"KeY3": "aw",
+			"NIL":  nil,
+		},
+		expected: map[string]interface{}{
+			"KEY1": "CHANGED",
+			"KEY3": "CHANGED",
+			"NIL":  "CHANGED",
+		},
+		mapFunc: func(k string, v interface{}) (string, interface{}) {
+			return strings.ToUpper(k), "CHANGED"
+		},
+	},
+}
+
+func TestMap(t *testing.T) {
+	for _, test := range mapTests {
+		got := Map(test.mapFunc, test.input)
+
+		assert.NotNil(t, got)
+		for expectedKey, expectedValue := range test.expected {
+			valueGot := got[expectedKey]
+
+			assert.Equal(t, expectedValue, valueGot)
+		}
+	}
+}
