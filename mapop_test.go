@@ -390,3 +390,42 @@ func TestMap(t *testing.T) {
 		}
 	}
 }
+
+var collectTests = []struct {
+	input    map[string]interface{}
+	expected map[string]interface{}
+}{
+	{
+		input: map[string]interface{}{
+			"key1": 2,
+			"KeY3": "aw",
+			"NIL":  nil,
+		},
+		expected: map[string]interface{}{
+			"key1": 2,
+			"KeY3": "aw",
+		},
+	},
+	{
+		input: map[string]interface{}{
+			"key1": 0,
+			"KeY3": "",
+		},
+		expected: map[string]interface{}{
+			"key1": 0,
+			"KeY3": "",
+		},
+	},
+	{
+		input:    map[string]interface{}{},
+		expected: map[string]interface{}{},
+	},
+}
+
+func TestCollect(t *testing.T) {
+	for _, test := range collectTests {
+		got := Collect(test.input)
+
+		assert.Equal(t, test.expected, got)
+	}
+}

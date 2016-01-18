@@ -101,3 +101,18 @@ func Map(f func(key string, value interface{}) (string, interface{}), input map[
 	}
 	return output
 }
+
+// Collect - removes all nil interface values and returns clean map
+func Collect(input map[string]interface{}) (output map[string]interface{}) {
+	size := len(input)
+	if size == 0 {
+		return input
+	}
+	output = make(map[string]interface{}, size)
+	for key, value := range input {
+		if value != nil {
+			output[key] = value
+		}
+	}
+	return output
+}
