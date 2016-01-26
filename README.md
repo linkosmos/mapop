@@ -18,6 +18,8 @@ Regular map[string]interface{} operations. Ruby enumerable inspired package.
  - Map(f func(key string, value interface{}) (string, interface{}), input map[string]interface{}) (output map[string]interface{})
  - Collect(input map[string]interface{}) (output map[string]interface{})
  - Merge(maps ...map[string]interface{}) (output map[string]interface{})
+ - SelectFunc(f func(key string, value interface{}) bool, input map[string]interface{}) (output map[string]interface{})
+
 
 ### Usage
 
@@ -140,6 +142,17 @@ Regular map[string]interface{} operations. Ruby enumerable inspired package.
   input = mapop.Merge(input, input2)
 
   > input{"Key1": 2, "key3": nil, "val": 2, "val2": "str", "val3": 4, "a2": "str", "a3": 4}
+```
+
+#### SelectFunc
+
+```go
+  input = mapop.SelectFunc(func(key string, value interface{}) bool {
+    return key == "val"
+  }, input)
+
+  > input{"val": 2}
+
 ```
 
 ### License

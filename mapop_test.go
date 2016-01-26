@@ -476,3 +476,55 @@ func TestMerge(t *testing.T) {
 		assert.Equal(t, test.expected, got)
 	}
 }
+
+var selectFuncTests = []struct {
+	input    map[string]interface{}
+	f        func(string, interface{}) bool
+	expected map[string]interface{}
+}{
+	{
+		input: map[string]interface{}{
+			"key1": "1",
+			"key2": 2,
+			"val1": 1,
+			"val2": 2,
+		},
+		f: func(k string, v interface{}) bool {
+			return strings.Contains(k, "key")
+		},
+		expected: map[string]interface{}{
+			"key1": "1",
+			"key2": 2,
+		},
+	},
+	{
+		input: map[string]interface{}{
+			"key1": "1",
+			"key2": 2,
+			"val1": 1,
+			"val2": 2,
+		},
+		f: nil,
+		expected: map[string]interface{}{
+			"key1": "1",
+			"key2": 2,
+			"val1": 1,
+			"val2": 2,
+		},
+	},
+	{
+		input: nil,
+		f: func(k string, v interface{}) bool {
+			return strings.Contains(k, "key")
+		},
+		expected: nil,
+	},
+}
+
+func TestSelectFunc(t *testing.T) {
+	for _, test := range selectFuncTests {
+		got := SelectFunc(test.f, test.input)
+
+		assert.Equal(t, test.expected, got)
+	}
+}

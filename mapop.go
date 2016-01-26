@@ -135,3 +135,18 @@ func Merge(maps ...map[string]interface{}) (output map[string]interface{}) {
 	}
 	return output
 }
+
+// SelectFunc - select map keys that yield true either by key or value
+func SelectFunc(f func(key string, value interface{}) bool, input map[string]interface{}) (output map[string]interface{}) {
+	size := len(input)
+	if size == 0 || f == nil {
+		return input
+	}
+	output = make(map[string]interface{})
+	for k, v := range input {
+		if f(k, v) {
+			output[k] = v
+		}
+	}
+	return output
+}
