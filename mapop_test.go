@@ -429,3 +429,50 @@ func TestCollect(t *testing.T) {
 		assert.Equal(t, test.expected, got)
 	}
 }
+
+var mergeTests = []struct {
+	input1   map[string]interface{}
+	input2   map[string]interface{}
+	input3   map[string]interface{}
+	expected map[string]interface{}
+}{
+	{
+		input1: map[string]interface{}{
+			"key1": 2,
+		},
+		input2: map[string]interface{}{
+			"key1": "2",
+		},
+		input3: map[string]interface{}{
+			"KeY3": "aw",
+		},
+		expected: map[string]interface{}{
+			"key1": "2",
+			"KeY3": "aw",
+		},
+	},
+	{
+		input1: map[string]interface{}{},
+		input2: nil,
+		input3: map[string]interface{}{
+			"KeY3": "aw",
+		},
+		expected: map[string]interface{}{
+			"KeY3": "aw",
+		},
+	},
+	{
+		input1:   nil,
+		input2:   nil,
+		input3:   nil,
+		expected: map[string]interface{}{},
+	},
+}
+
+func TestMerge(t *testing.T) {
+	for _, test := range mergeTests {
+		got := Merge(test.input1, test.input2, test.input3)
+
+		assert.Equal(t, test.expected, got)
+	}
+}

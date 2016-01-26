@@ -116,3 +116,22 @@ func Collect(input map[string]interface{}) (output map[string]interface{}) {
 	}
 	return output
 }
+
+// Merge - merges given maps into 1 map
+// values will be overridden by last matching key - value
+func Merge(maps ...map[string]interface{}) (output map[string]interface{}) {
+	size := len(maps)
+	if size == 0 {
+		return output
+	}
+	if size == 1 {
+		return maps[0]
+	}
+	output = make(map[string]interface{})
+	for _, m := range maps {
+		for k, v := range m {
+			output[k] = v
+		}
+	}
+	return output
+}
