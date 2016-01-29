@@ -3,6 +3,7 @@
 Regular map[string]interface{} operations. Ruby enumerable inspired package.
 
 [![Build Status](https://travis-ci.org/linkosmos/mapop.svg?branch=master)](https://travis-ci.org/linkosmos/mapop)
+[![Coverage Status](https://coveralls.io/repos/github/linkosmos/mapop/badge.svg?branch=master)](https://coveralls.io/github/linkosmos/mapop?branch=master)
 [![GoDoc](http://godoc.org/github.com/linkosmos/mapop?status.svg)](http://godoc.org/github.com/linkosmos/mapop)
 [![Go Report Card](http://goreportcard.com/badge/linkosmos/mapop)](http://goreportcard.com/report/linkosmos/mapop)
 [![BSD License](http://img.shields.io/badge/license-BSD-blue.svg)](http://opensource.org/licenses/BSD-3-Clause)
