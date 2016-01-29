@@ -12,6 +12,7 @@ before_install:
   - go get -v github.com/golang/lint/golint
   - go get -v github.com/Sirupsen/logrus
   - go get -v github.com/stretchr/testify/assert
+  - go get -v github.com/mattn/goveralls
 
 install:
   - go install -race -v std
@@ -22,3 +23,5 @@ script:
   - $HOME/gopath/bin/golint .
   - go test -cpu=2 -race -v ./...
   - go test -cpu=2 -covermode=atomic ./...
+  - go test -v -covermode=count -coverprofile=coverage.out
+  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
